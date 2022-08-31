@@ -41,7 +41,7 @@ def main(filepath: Path, algorithm: str, buffer_size: int) -> None:
     if not filepath.exists():
         raise FileNotFoundError(f"path does not exist: {filepath}")
 
-    print()
+    print(f"\nAlgorithm: {algorithm}\n")
     if filepath.is_file():
         checksum = generate_checksum(
             filepath,
@@ -69,7 +69,7 @@ if __name__ == "__main__":
     
     parser.add_argument("filepath", type=str, help="paths to files or folders to checksum")
     parser.add_argument("-a", dest="algorithm", type=str, default="sha1", help="hash algorithm, default: sha1")
-    parser.add_argument("-b", dest="buffersize", type=int, default=4096,  help="buffer size, default")
+    parser.add_argument("-b", dest="buffersize", type=int, default=4096,  help="buffer size, default: 4096")
     parser.add_argument("-l", dest="list_algorithms", action="store_true", help="list all available algorithms")
     
     args = parser.parse_args()

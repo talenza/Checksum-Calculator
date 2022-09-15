@@ -65,23 +65,27 @@ def main(filepath: Path, algorithm: str, buffer_size: int) -> None:
     print()
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser("checksum calculator")
+    parser = argparse.ArgumentParser("checksum calculator", exit_on_error=False)
     
-    parser.add_argument("filepath", type=str, help="paths to files or folders to checksum")
+    parser.add_argument("filepath", type=str, help="paths to files or folders to checksum", nargs="?")
     parser.add_argument("-a", dest="algorithm", type=str, default="sha1", help="hash algorithm, default: sha1")
     parser.add_argument("-b", dest="buffersize", type=int, default=4096,  help="buffer size, default: 4096")
     parser.add_argument("-l", dest="list_algorithms", action="store_true", help="list all available algorithms")
     
     args = parser.parse_args()
     
-    filepath = Path(args.filepath)
-    algorithm = args.algorithm.lower()
-    buffersize = args.buffersize
-
     if args.list_algorithms:
         list_available_algorithms()
     else:
+        if args.filepath is None:
+            parser.error("filepath was not provided")
+        
         try:
+            filepath = Path(args.filepath)
+            algorithm = args.algorithm.lower()
+            buffersize = args.buffersize
+            
             main(filepath, algorithm, buffersize)
+        
         except Exception as e:
-            print(f"Error: {e}")
+            parser.error(e)

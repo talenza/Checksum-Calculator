@@ -5,6 +5,10 @@ from pathlib import Path
 from rich.progress import Progress
 
 
+DEFAULT_ALGORITHM = "sha1"
+DEFAULT_BUFFER_SIZE = 4096
+
+
 def list_available_algorithms() -> None:
     print("\nAvailable algorithms:\n=====================")
     for algorithm in hashlib.algorithms_available:
@@ -68,8 +72,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser("checksum calculator", exit_on_error=False)
     
     parser.add_argument("filepath", type=str, help="paths to files or folders to checksum", nargs="?")
-    parser.add_argument("-a", dest="algorithm", type=str, default="sha1", help="hash algorithm, default: sha1")
-    parser.add_argument("-b", dest="buffersize", type=int, default=4096,  help="buffer size, default: 4096")
+    parser.add_argument("-a", dest="algorithm", type=str, default=DEFAULT_ALGORITHM, help=f"hash algorithm, default: {DEFAULT_ALGORITHM}")
+    parser.add_argument("-b", dest="buffersize", type=int, default=DEFAULT_BUFFER_SIZE,  help=f"buffer size, default: {DEFAULT_BUFFER_SIZE}")
     parser.add_argument("-l", dest="list_algorithms", action="store_true", help="list all available algorithms")
     
     args = parser.parse_args()
